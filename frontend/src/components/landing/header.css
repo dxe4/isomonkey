@@ -1,0 +1,71 @@
+header .intro-text {
+	padding-top: 30vh;
+	text-align: center;
+}
+p {
+	font-size: 15px;
+}
+p.intro {
+	margin: 12px 0 0;
+	line-height: 24px;
+}
+a {
+	color: #608dfd;
+	font-weight: 400;
+}
+a:hover, a:focus {
+	text-decoration: none;
+	color: #608dfd;
+}
+
+.intro h1 {
+	font-family: 'Raleway', sans-serif;
+	color: #fff;
+	font-size: 82px;
+	font-weight: 700;
+	text-transform: uppercase;
+	margin-top: 0;
+	margin-bottom: 10px;
+}
+.intro h1 span {
+	font-weight: 800;
+	color: #5ca9fb;
+}
+.intro p {
+	color: #fff;
+	font-size: 22px;
+	font-weight: 300;
+	line-height: 30px;
+	margin: 0 auto;
+	margin-bottom: 60px;
+}
+
+.intro {
+    height: 65vh;
+	overflow: auto;
+	position: relative;
+
+}
+.intro:before {
+	content: "";
+    /* position: fixed; */
+
+    position: absolute;
+	left: 0;
+	right: 0;
+	z-index: -1;
+  
+	display: block;
+	background-size:cover;
+	width: 100%;
+	height: 100%;
+   
+	background: url(/img/sergey-pesterev-JV78PVf3gGI-unsplash.jpg) center center no-repeat;
+	
+	filter: grayscale(70%);
+	filter: brightness(40%);
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	background-size: cover;
+	-o-background-size: cover;
+}

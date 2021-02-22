@@ -1,0 +1,42 @@
+
+
+.avatar-wrapper {
+	position: absolute;
+    width: 100%;
+    bottom: 2em;
+	margin-bottom: 2em;
+
+}
+
+.avatar-wrapper .user-details{
+	color: white;
+	font-weight: bold;
+}
+.avatar-wrapper .user-name{
+	color: white;
+	font-weight: bold;
+}
+
+/* TODO 
+	this is because the svg sets width/height to 1em, causing the avatar to not render correctly on big circles
+	there must be a better way of solving this	
+*/
+.avatar-wrapper svg{
+	width: 100% !important;
+	height: 100% !important;
+	text-align: center;
+}
+
+/* 
+	TODO
+	shouldn't need !important, fix later
+*/
+.avatar {
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important
+}
+
+.intro a {
+    font-weight: bold;
+}
