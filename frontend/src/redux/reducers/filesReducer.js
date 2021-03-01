@@ -2,7 +2,8 @@ import produce from 'immer';
 import {
     FILES_FETCHED, UPLOADING_FILE,
     UPLOAD_FAILED,
-    UPLOAD_SUCCESS
+    UPLOAD_SUCCESS,
+    IMAGE_DRAGGED
 } from "../actions/types";
 import initialState from './initialState';
 
@@ -38,6 +39,20 @@ export default function filesReducer(state = initialState.filesReducer, action) 
         case FILES_FETCHED:
             return produce(state, (draftState) => {
                 draftState.fileList.push(...value)
+            });
+        case IMAGE_DRAGGED:
+            // TODO, maybe splice is more readable
+            const b = value['fromIdx'];
+            const a = value['toIdx'];
+
+            return produce(state, (draftState) => {
+                [
+                    draftState.fileList[a],
+                    draftState.fileList[b]
+                ] = [
+                    draftState.fileList[b],
+                    draftState.fileList[a]
+                ];
             });
         default:
             return state;

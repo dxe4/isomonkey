@@ -1,8 +1,8 @@
 import { getFilesApi, sendFileApi } from '../../api/imageApi';
 import {
   FILES_FETCHED, UPLOADING_FILE,
-
-  UPLOAD_FAILED, UPLOAD_SUCCESS
+  UPLOAD_FAILED, UPLOAD_SUCCESS,
+  IMAGE_DRAGGED
 } from "./types";
   
 
@@ -54,6 +54,16 @@ import {
     }
   }
   
+
+  const imageDraggedAction = (fromIdx, toIdx) => (dispatch) => {
+    return dispatch({
+      'type': IMAGE_DRAGGED,
+      'value': {
+        'fromIdx': fromIdx,
+        'toIdx': toIdx
+      }
+    })
+  }
   
-  export { sendFileAction, getFilesAction, fileUploadedAction };
-  
+  export { sendFileAction, getFilesAction, fileUploadedAction, imageDraggedAction};
+   

@@ -8,3 +8,5 @@ export const UPLOADING_FILE = 'UPLOADING_FILE';
 export const UPLOAD_SUCCESS = 'UPLOAD_SUCCESS';
 export const UPLOAD_FAILED = 'UPLOAD_FAILED';
 export const FILES_FETCHED = 'FILES_FETCHED';
+
+export const IMAGE_DRAGGED = 'IMAGE_DRAGGED';

@@ -1,14 +1,17 @@
 import { UserOutlined } from '@ant-design/icons';
 import { Avatar, Col, Divider, Row, Tabs } from 'antd';
 import React, { useEffect } from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { getFilesAction } from '../../redux/actions/files';
 import CustomUpload from '../upload/uploadComponent';
 import './avatar.css';
+import DragableImage from './dragableImage';
+import './image-masonry.css';
 import './profile.css';
-import './image-masonry.css'
 
 
 const { TabPane } = Tabs;
@@ -16,27 +19,27 @@ const { TabPane } = Tabs;
 function callback(key) {
   // TODO
 }
+
+
 const ProfilePage = (props) => {
 
   const renderFiles = () => {
+
     return (
-      <div className='masonry'>
-          <div className='item'>
+      <DndProvider backend={HTML5Backend} accept={false}>
+        <div  className='masonry'>
           <CustomUpload></CustomUpload>
-          </div>
-            {props.fileList.map((fileData, i) => (
+          {props.fileList.map((fileData, i) => (
                <div key={i}>
-                <img
-                    className='item'
-                    src={fileData.base64 ? fileData.base64 : fileData.image}
-                    style={{ width: "100%", display: "block" }}
-                    alt=""
-                />
+                    <DragableImage
+                      file={fileData}
+                      fileList={props.fileList}
+                    />
                 </div>
             ))}
-      </div>
+            </div>
+      </DndProvider>
     )
-
   }
 
   const ProfileTabs = () => {
