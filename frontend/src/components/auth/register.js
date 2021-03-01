@@ -1,10 +1,10 @@
-import { Form, Input, Button } from 'antd';
+import { Button, Form, Input } from 'antd';
 import React from 'react';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
+import { registerAction } from '../../redux/actions/user';
 import './register-form.css';
-import { registerAction } from '../../redux/actions'
-import { connect } from 'react-redux'
-import { Redirect } from 'react-router-dom'
-import { bindActionCreators } from 'redux'
 
 
 function RegisterPage(props) {
@@ -26,11 +26,10 @@ function RegisterPage(props) {
     };
 
     const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
+        
     };
 
     return (
-
         <div className="Signup">
             <Form
                 {...layout}

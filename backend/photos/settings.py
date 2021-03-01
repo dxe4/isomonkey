@@ -81,11 +81,14 @@ WSGI_APPLICATION = 'photos.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-# TODO postgres
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'isomonkey',
+        'USER': 'isomonkey',
+        'PASSWORD': 'isomonkey',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
@@ -134,10 +137,12 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        # 'isomonkey.utils.JSONWebTokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
 }
+
 JWT_AUTH = {
     'JWT_ENCODE_HANDLER':
     'rest_framework_jwt.utils.jwt_encode_handler',
@@ -169,8 +174,9 @@ JWT_AUTH = {
     'JWT_ALLOW_REFRESH': False,
     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
 
-    'JWT_AUTH_HEADER_PREFIX': 'JWT',
+    'JWT_AUTH_HEADER_PREFIX': 'BEARER',
     'JWT_AUTH_COOKIE': None,
+    'JWT_PAYLOAD_GET_USERNAME_HANDLER': 'isomonkey.utils.jwt_get_username_from_payload',
 
 }
 
@@ -181,3 +187,10 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 AUTH_USER_MODEL = 'isomonkey.CustomUser'
+
+# TODO post images on s3
+import os
+MEDIA_URL = '/pictures/'
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploaded_pictures')

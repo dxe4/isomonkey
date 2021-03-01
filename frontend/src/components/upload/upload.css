@@ -1,18 +1,4 @@
-.ant-upload-list-picture-card-container {
-	padding-bottom: 50px;
-	padding-left: 10px;
-}
-
-/* 
-TODO this is a less variable
-!important is a hack
-we only override for .custom-file-uploader so for now is fine
-*/
-.custom-file-uploader .ant-upload.ant-upload-select-picture-card {
-	width: 150px !important;
-	height: 150px !important;
-}
-.custom-file-uploader .ant-upload-list-picture-card-container {
-	width: 150px !important;
-	height: 150px !important;
+.pictures-masonry {
+    padding-left: 5%;
+    padding-right: 5%;
 }

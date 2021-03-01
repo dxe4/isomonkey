@@ -1,9 +1,9 @@
-from rest_framework import generics
+from rest_framework import generics, mixins
 from rest_framework.response import Response
 from rest_framework_jwt.settings import api_settings
 
-from isomonkey.models import CustomUser
-from isomonkey.serializers import LoginSerializer, RegisterSerializer
+from isomonkey.models import CustomUser, Pictures
+from isomonkey.serializers import LoginSerializer, RegisterSerializer, FileSerializer
 
 
 def _jwt_login(user):
@@ -53,3 +53,18 @@ class LoginView(generics.GenericAPIView):
                 return Response(data, status=200)
             else:
                 return Response({}, status=403)
+
+
+class FileView(generics.GenericAPIView, mixins.CreateModelMixin, mixins.ListModelMixin):
+
+    serializer_class = FileSerializer
+    
+    def get_queryset(self):
+        return Pictures.objects.filter(user=self.request.user)
+
+    def post(self, request, *args, **kwargs):
+        request.data.update({"user": request.user.id})
+        return self.create(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)

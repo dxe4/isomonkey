@@ -1,8 +1,7 @@
+import { loginApi, registerApi } from '../../api/registerApi';
 import {
-  REGISTER_SUCCESS,
-  LOGIN_SUCCESS,
+  LOGIN_SUCCESS, REGISTER_SUCCESS
 } from "./types";
-import { registerApi, loginApi } from '../../api/registerApi'
 
 
 export function registerSuccess(payload) {

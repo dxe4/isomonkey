@@ -1,14 +1,13 @@
-import { Form, Input, Button } from 'antd';
+import { Button, Form, Input } from 'antd';
 import React from 'react';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
+import { loginAction } from '../../redux/actions/user';
 import './register-form.css';
-import {loginAction} from '../../redux/actions'
-import { connect } from 'react-redux'
-import  { Redirect } from 'react-router-dom'
-import { bindActionCreators } from 'redux'
 
 
 function LoginPage(props) {
-
     if (!!props.user) {
         return <Redirect to='/profile'  />
     }
@@ -67,12 +66,13 @@ function LoginPage(props) {
 const actions = {
     'login': loginAction
 };
-const mapStateToProps = state => ({ user: state.user })
+
+const mapStateToProps = state => ({ user: state.userAuthReducer.user })
 function mapDispatchToProps(dispatch) {
     return {
       actions:  bindActionCreators(actions, dispatch)
     };
-  }
+}
 
 export default  connect(
     mapStateToProps,

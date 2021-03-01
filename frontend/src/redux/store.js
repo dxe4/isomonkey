@@ -1,15 +1,11 @@
-import userAuthReducer from "./reducers/userAuthReducer";
+import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
-import { createStore, applyMiddleware } from 'redux';
+import rootReducer from './reducers/index';
+import initialState from './reducers/initialState';
 
-
-const user = JSON.parse(localStorage.getItem("user"));
-const initialState = {
-    user: user
-}
 
 const store = createStore(
-  userAuthReducer,
+  rootReducer,
   initialState,
   applyMiddleware(thunk)
 );

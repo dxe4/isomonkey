@@ -1,3 +1,4 @@
-db.sqlite3 # todo move to postgres anyway
 *.pyc
 venv/
+# TODO
+uploaded_pictures/

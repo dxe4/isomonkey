@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
 from rest_framework_jwt.views import obtain_jwt_token
 from rest_framework_jwt.views import refresh_jwt_token
 from rest_framework_jwt.views import verify_jwt_token
@@ -27,3 +28,12 @@ urlpatterns = [
     path('api/token-refresh', refresh_jwt_token),
     path('api/token-verify', verify_jwt_token),
 ]
+
+# TODO post images on s3
+if settings.DEBUG:
+    from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+    from django.conf.urls.static import static
+
+    urlpatterns += staticfiles_urlpatterns()
+    urlpatterns += static(
+        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

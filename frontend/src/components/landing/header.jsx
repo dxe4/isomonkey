@@ -1,9 +1,8 @@
-import React from "react";
-import { Button } from 'antd';
 import { LoginOutlined, UserAddOutlined } from '@ant-design/icons';
-import './header.css'
-import { Divider } from 'antd';
-import ComparisonTable from './comparisonTable'
+import { Button, Divider } from 'antd';
+import React from "react";
+import ComparisonTable from './comparisonTable';
+import './header.css';
 
 
 const Header = () => {
@@ -20,7 +19,7 @@ const Header = () => {
                     <span></span>
                   </h1>
                   <p>
-                    Upload your pictures.
+                    Upload your pictures. Create and customise your profile.
                   </p>
 
                   <Button href='/register' type="primary" shape="round" icon={<UserAddOutlined />}>

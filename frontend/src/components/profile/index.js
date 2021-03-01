@@ -1,13 +1,19 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Avatar } from 'antd';
 import { UserOutlined } from '@ant-design/icons'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Row, Col } from 'antd';
 import { Divider } from 'antd';
-import PicturesWall from '../upload/uploadComponent'
+import {bindActionCreators} from 'redux'
+
+import CustomUpload from '../upload/uploadComponent'
+import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
 
 import { Tabs } from 'antd';
+import { getFilesAction } from '../../redux/actions/files';
+import PlusOutlined from '@ant-design/icons';
+
 import './avatar.css'
 import './profile.css'
 
@@ -17,22 +23,48 @@ function callback(key) {
   // TODO
 }
 
-const ProfileTabs = () => (
-  <Tabs defaultActiveKey="1" onChange={callback} centered  style={{ height: 600, paddingBottom: 50 }}>
-    <TabPane tab="Upload" key="1">
-      <PicturesWall ></PicturesWall>
-    </TabPane>
-    <TabPane tab="My Profile" key="2">
-      Content of Tab Pane 2
-    </TabPane>
-    <TabPane tab="Discover" key="3">
-      Content of Tab Pane 3
-    </TabPane>
-  </Tabs>
-);
-
-
 const ProfilePage = (props) => {
+
+  
+  const renderFiles = () => {
+    return <ResponsiveMasonry
+        className='pictures-masonry'
+        columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3}}
+    >
+        <Masonry gutter='20' columnsCount={5}>
+        <CustomUpload></CustomUpload>
+          
+            {props.fileList.map((fileData, i) => (
+                <img
+                    key={i}
+                    src={fileData.base64 ? fileData.base64 : fileData.image}
+                    style={{ width: "100%", display: "block" }}
+                    alt=""
+                />
+            ))}
+        </Masonry>
+    </ResponsiveMasonry>
+  }
+
+  const ProfileTabs = () => {
+    return <Tabs defaultActiveKey="1" onChange={callback} centered  style={{paddingBottom: 50 }}>
+      <TabPane tab="Upload" key="1">
+        {/* <PicturesWall ></PicturesWall> */}
+        {renderFiles()}
+      </TabPane>
+      <TabPane tab="My Profile" key="2">
+        Content of Tab Pane 2
+      </TabPane>
+      <TabPane tab="Discover" key="3">
+        Content of Tab Pane 3
+      </TabPane>
+    </Tabs>
+  };
+
+    useEffect(() => {
+      props.actions.getFiles()
+    }, [])
+
     if (!props.user) {
         return <Redirect to='/' />
     }
@@ -79,9 +111,18 @@ const ProfilePage = (props) => {
     );
 }
 
-const mapStateToProps = state => ({ user: state.user })
-function mapDispatchToProps(dispatch) {
+const actions = {
+  'getFiles': getFilesAction
+}
 
+const mapStateToProps = state => ({
+    user: state.userAuthReducer.user,
+    fileList: state.filesReducer.fileList,
+})
+function mapDispatchToProps(dispatch) {
+  return {
+      actions:  bindActionCreators(actions, dispatch)
+  };
 }
 
 export default connect(

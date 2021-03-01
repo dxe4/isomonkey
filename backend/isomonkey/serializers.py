@@ -1,3 +1,4 @@
+from isomonkey.models import Pictures
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 
@@ -29,3 +30,9 @@ class UserSerializer(serializers.ModelSerializer):
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
     password = serializers.CharField(max_length=1024, required=True)
+
+
+class FileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Pictures
+        fields = '__all__'

@@ -1,14 +1,12 @@
-import produce from 'immer'
-
+import produce from 'immer';
 import {
-    REGISTER_SUCCESS,
-    REGISTER_FAIL,
-    LOGIN_SUCCESS,
-    LOGIN_FAIL,
-    LOGOUT,
-  } from "../actions/types";
+  LOGIN_FAIL, LOGIN_SUCCESS,
+  LOGOUT, REGISTER_FAIL, REGISTER_SUCCESS
+} from "../actions/types";
+import initialState from './initialState';
+
   
-  export default function rootReducer (state, action) {
+  export default function userAuthReducer (state = initialState.userAuthReducer, action) {
     const { type, payload } = action;
 
     function _reducer(type, payload) {
@@ -38,6 +36,10 @@ import {
           }
     }
     const result = _reducer(type, payload);
-    localStorage.setItem('user', JSON.stringify(result.user || null));
+    
+    if (typeof(result) !== 'undefined') {
+      localStorage.setItem('user', JSON.stringify(result.user || null));    
+    }
+    
     return result;
   }

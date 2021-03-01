@@ -40,3 +40,10 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.email
+
+
+class Pictures(models.Model):
+    # TODO, s3 or equivilent
+    image = models.ImageField()
+    exif_data = models.JSONField()
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)

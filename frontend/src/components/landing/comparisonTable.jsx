@@ -1,9 +1,9 @@
-import React from "react";
-import './header.css'
-import { Table, Space } from 'antd';
-
 import { CheckCircleTwoTone, QuestionCircleTwoTone } from '@ant-design/icons';
-import './comparisonTable.css'
+import { Space, Table } from 'antd';
+import React from "react";
+import './comparisonTable.css';
+import './header.css';
+
 
 const ComparisonTable = () => {
     const dataSource = [
