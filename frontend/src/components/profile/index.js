@@ -1,56 +1,49 @@
-import React, {useEffect} from 'react';
-import { Avatar } from 'antd';
-import { UserOutlined } from '@ant-design/icons'
-import { Redirect } from 'react-router-dom'
-import { connect } from 'react-redux'
-import { Row, Col } from 'antd';
-import { Divider } from 'antd';
-import {bindActionCreators} from 'redux'
-
-import CustomUpload from '../upload/uploadComponent'
-import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
-
-import { Tabs } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
+import { Avatar, Col, Divider, Row, Tabs } from 'antd';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
 import { getFilesAction } from '../../redux/actions/files';
-import PlusOutlined from '@ant-design/icons';
+import CustomUpload from '../upload/uploadComponent';
+import './avatar.css';
+import './profile.css';
+import './image-masonry.css'
 
-import './avatar.css'
-import './profile.css'
 
 const { TabPane } = Tabs;
 
 function callback(key) {
   // TODO
 }
-
 const ProfilePage = (props) => {
 
-  
   const renderFiles = () => {
-    return <ResponsiveMasonry
-        className='pictures-masonry'
-        columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3}}
-    >
-        <Masonry gutter='20' columnsCount={5}>
-        <CustomUpload></CustomUpload>
-          
+    return (
+      <div className='masonry'>
+          <div className='item'>
+          <CustomUpload></CustomUpload>
+          </div>
             {props.fileList.map((fileData, i) => (
+               <div key={i}>
                 <img
-                    key={i}
+                    className='item'
                     src={fileData.base64 ? fileData.base64 : fileData.image}
                     style={{ width: "100%", display: "block" }}
                     alt=""
                 />
+                </div>
             ))}
-        </Masonry>
-    </ResponsiveMasonry>
+      </div>
+    )
+
   }
 
   const ProfileTabs = () => {
     return <Tabs defaultActiveKey="1" onChange={callback} centered  style={{paddingBottom: 50 }}>
       <TabPane tab="Upload" key="1">
-        {/* <PicturesWall ></PicturesWall> */}
         {renderFiles()}
+
       </TabPane>
       <TabPane tab="My Profile" key="2">
         Content of Tab Pane 2
