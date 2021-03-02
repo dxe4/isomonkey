@@ -29,4 +29,17 @@ function sendFileApi(file, exif) {
     })
 }
 
-export {sendFileApi, getFilesApi};
+function updateFilesApi(files) {
+
+    return axios({
+        method: 'PATCH',
+        url: 'api/files',
+        data: JSON.stringify(files),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+    })
+}
+
+export {sendFileApi, getFilesApi, updateFilesApi};

@@ -1,8 +1,10 @@
-import { getFilesApi, sendFileApi } from '../../api/imageApi';
+import { getFilesApi, sendFileApi, updateFilesApi} from '../../api/imageApi';
 import {
   FILES_FETCHED, UPLOADING_FILE,
   UPLOAD_FAILED, UPLOAD_SUCCESS,
-  IMAGE_DRAGGED
+  IMAGE_DRAGGED,
+  UPDATED_FILES_SUCCESS,
+  UPDATING_FILES
 } from "./types";
   
 
@@ -64,6 +66,24 @@ import {
       }
     })
   }
-  
-  export { sendFileAction, getFilesAction, fileUploadedAction, imageDraggedAction};
-   
+
+  const updateImagesAction = (files) => (dispatch) => {
+    dispatch({
+      'type': UPDATING_FILES,
+      'value': files
+    })
+
+    return updateFilesApi(files)
+  }
+
+  const imagesUpdatedAction = (response) => (dispatch) => {
+    return dispatch({
+      'type': UPDATED_FILES_SUCCESS,
+      'value': response
+    })
+  }
+
+  export {
+    sendFileAction, getFilesAction, fileUploadedAction, imageDraggedAction,
+    imagesUpdatedAction, updateImagesAction
+  };

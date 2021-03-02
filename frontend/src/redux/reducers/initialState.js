@@ -6,6 +6,7 @@ export default {
         'user': user
     },
     filesReducer: {
-        fileList: []
+        fileList: [],
+        fileChangedById: new Set(),
     },
 }

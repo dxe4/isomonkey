@@ -1,15 +1,18 @@
-import produce from 'immer';
+import produce, { enableMapSet } from 'immer';
 import {
     FILES_FETCHED, UPLOADING_FILE,
     UPLOAD_FAILED,
     UPLOAD_SUCCESS,
-    IMAGE_DRAGGED
+    IMAGE_DRAGGED,
+    UPDATED_FILES_SUCCESS, UPDATING_FILES
 } from "../actions/types";
 import initialState from './initialState';
 
+enableMapSet()
 
 export default function filesReducer(state = initialState.filesReducer, action) {
     const { type, value } = action;
+
     switch (type) {
         case UPLOADING_FILE:
             return produce(state, (draftState) => {
@@ -42,18 +45,38 @@ export default function filesReducer(state = initialState.filesReducer, action) 
             });
         case IMAGE_DRAGGED:
             // TODO, maybe splice is more readable
-            const b = value['fromIdx'];
-            const a = value['toIdx'];
+            const _from = value['fromIdx'];
+            const _to = value['toIdx'];
+
+            const fromOrder = state.fileList[_from].order
+            const toOrder = state.fileList[_to].order
+
+            const fromPk = state.fileList[_from].pk
+            const toPk = state.fileList[_to].pk
 
             return produce(state, (draftState) => {
+                
+                draftState.fileList[_from].order = toOrder;
+                draftState.fileList[_to].order = fromOrder;
+
                 [
-                    draftState.fileList[a],
-                    draftState.fileList[b]
+                    draftState.fileList[_from],
+                    draftState.fileList[_to]
                 ] = [
-                    draftState.fileList[b],
-                    draftState.fileList[a]
+                    draftState.fileList[_to],
+                    draftState.fileList[_from]
                 ];
+
+                draftState.fileChangedById.add(fromPk);
+                draftState.fileChangedById.add(toPk);
+                
             });
+        case UPDATED_FILES_SUCCESS:
+            return produce(state, (draftState)=> {
+                draftState.fileChangedById = new Set();
+            })            
+        case UPDATING_FILES:
+            return state
         default:
             return state;
     }

@@ -5,6 +5,23 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+class HTTPMethodRequiredFieldsMixin:
+    '''
+    To avoid creating separate serializers for separate methods
+    '''
+
+    PER_ACTION_REQUIRED_FIELDS = None
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        request = self.context.get('request')
+        if request:
+            http_method = request.method
+            required_fields = (self.PER_ACTION_REQUIRED_FIELDS or {}).get(http_method)
+            if required_fields:
+                for field_name, required_value in required_fields:
+                    self.fields[field_name].required = required_value
+
 
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
@@ -33,6 +50,16 @@ class LoginSerializer(serializers.Serializer):
 
 
 class FileSerializer(serializers.ModelSerializer):
+    order = serializers.IntegerField(required=False)
+
     class Meta:
         model = Pictures
-        fields = '__all__'
+        fields = ['image', 'exif_data', 'user', 'order', 'pk']
+
+
+class FileUpdateSerializer(serializers.ModelSerializer):
+    order = serializers.IntegerField(required=False)
+
+    class Meta:
+        model = Pictures
+        fields = ['exif_data', 'user', 'order', 'pk']

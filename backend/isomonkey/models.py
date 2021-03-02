@@ -1,6 +1,7 @@
 from django.db import models
 
 from django.db import models
+from django.db.models import Max
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
 
@@ -45,5 +46,18 @@ class CustomUser(AbstractUser):
 class Pictures(models.Model):
     # TODO, s3 or equivilent
     image = models.ImageField()
-    exif_data = models.JSONField()
+    exif_data = models.JSONField(blank=True, null=True)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    order = models.IntegerField(unique=True)
+
+    def save(self, *args, **kwargs):
+        if not self.pk and not self.order:
+            _result = Pictures.objects.filter(
+                user=self.user.id
+            ).aggregate(max_order=Max('order'))
+            if _result['max_order'] is None:
+                self.order = 1
+            else:
+                self.order = _result['max_order'] + 1
+
+        return super(Pictures, self).save(*args, **kwargs)

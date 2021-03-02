@@ -1,12 +1,12 @@
 import { UserOutlined } from '@ant-design/icons';
-import { Avatar, Col, Divider, Row, Tabs } from 'antd';
+import { Avatar, Col, Divider, Row, Tabs, Button} from 'antd';
 import React, { useEffect } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
-import { getFilesAction } from '../../redux/actions/files';
+import { getFilesAction, updateImagesAction, imagesUpdatedAction } from '../../redux/actions/files';
 import CustomUpload from '../upload/uploadComponent';
 import './avatar.css';
 import DragableImage from './dragableImage';
@@ -42,9 +42,22 @@ const ProfilePage = (props) => {
     )
   }
 
+  const updateImages = () => {
+    const changedFiles = props.fileList.filter((item) => {
+      return props.fileChangedById.has(item.pk)
+    })
+    props.actions.updateImages(changedFiles).then((response) => {
+      props.actions.imagesUpdated(response);
+    })    
+  }
+
   const ProfileTabs = () => {
+
+    const filesChanged = props.fileChangedById.size > 0;
+
     return <Tabs defaultActiveKey="1" onChange={callback} centered  style={{paddingBottom: 50 }}>
       <TabPane tab="Upload" key="1">
+        <Button onClick={() => updateImages()} type='primary' disabled={filesChanged ? false: true}>save</Button>
         {renderFiles()}
 
       </TabPane>
@@ -108,12 +121,15 @@ const ProfilePage = (props) => {
 }
 
 const actions = {
-  'getFiles': getFilesAction
+  'getFiles': getFilesAction,
+  'updateImages': updateImagesAction,
+  'imagesUpdated': imagesUpdatedAction
 }
 
 const mapStateToProps = state => ({
     user: state.userAuthReducer.user,
     fileList: state.filesReducer.fileList,
+    fileChangedById: state.filesReducer.fileChangedById,
 })
 function mapDispatchToProps(dispatch) {
   return {
